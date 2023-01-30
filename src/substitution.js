@@ -17,15 +17,24 @@ const substitutionModule = (function () {
     return true;
   }
 
-  function createLookupTable(alphabet){
-    let lookupTable = {}
+  function createLookupTable(alphabet, encode) {
+    let lookupTable = {};
     const startOfAlphabet = 97;
 
-    for (let i = 0; i < alphabet.length; i++){
-      const letter = alphabet[i];
-      lookupTable[String.fromCharCode(startOfAlphabet + i)] = letter;
+    //if encode create a look up where regular alphabet is keys and given alphabet is values
+    if (encode) {
+      for (let i = 0; i < alphabet.length; i++) {
+        const letter = alphabet[i];
+        lookupTable[String.fromCharCode(startOfAlphabet + i)] = letter;
+      }
     }
-
+    //if !encode create a look up where given alphabet is keys and regular alphabet is values
+    else {
+      for (let i = 0; i < alphabet.length; i++) {
+        const letter = alphabet[i];
+        lookupTable[letter] = String.fromCharCode(startOfAlphabet + i);
+      }
+    }
     return lookupTable;
   }
 
@@ -35,25 +44,15 @@ const substitutionModule = (function () {
     if (!alphabet || alphabet.length != 26 || !checkUniqueness(alphabet))
       return false;
 
-    const lookupTable = createLookupTable(alphabet);
+    const lookupTable = createLookupTable(alphabet, encode);
     let message = [];
 
-
-    for (let i = 0; i < input.length; i++){
+    for (let i = 0; i < input.length; i++) {
       const currentLetter = input[i].toLocaleLowerCase();
 
-      if(currentLetter === " ") 
-        message.push(" ");
-      else {
-        if(encode) {
-          message.push(lookupTable[currentLetter]);
-        } else {
-          const decodedLetter = Object.keys(lookupTable).find(
-            (letter) => lookupTable[letter] === currentLetter
-          );
-          message.push(decodedLetter);
-        }
-      }
+      currentLetter === " "
+        ? message.push(" ")
+        : message.push(lookupTable[currentLetter]);
     }
 
     message = message.join("");
