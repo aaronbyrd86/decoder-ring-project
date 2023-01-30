@@ -8,6 +8,49 @@ const substitutionModule = (function () {
 
   function substitution(input, alphabet, encode = true) {
     // your solution code here
+
+    if(alphabet.length != 26) return false;
+
+    subArr = alphabet.split("")
+
+    let lookupTable = {};
+    const startOfAlphabet = 97;
+    let i = 0;
+
+    for(const letter of subArr){
+      lookupTable[String.fromCharCode(startOfAlphabet + i)] = letter;
+      i++
+    }
+
+    let message = []
+
+    if(encode){
+      for(let i = 0; i < input.length; i++) {
+        const currentLetter = input[i].toLocaleLowerCase()
+        
+        if(currentLetter !== " ")
+          message.push(lookupTable[currentLetter])
+        else
+          message.push(" ")
+      } 
+    }
+
+    else {
+      for (let i = 0; i < input.length; i ++){
+        const currentLetter = input[i].toLocaleLowerCase();
+        
+        if(currentLetter !== " "){
+          const decodedLetter = Object.keys(lookupTable).find(letter => lookupTable[letter] === currentLetter)
+          message.push(decodedLetter);
+        }
+        else
+          message.push(" ")
+      }
+    }
+
+    message = message.join("")
+
+    return message;
   }
 
   return {
