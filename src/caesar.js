@@ -16,9 +16,9 @@ const caesarModule = (function () {
 
     add ? charValue += shiftValue : charValue -= shiftValue;
     
-    if (charValue > endOfAlphabet && add)
+    if (charValue > endOfAlphabet )
       charValue = charValue - 26; 
-    else if(charValue < startOfAlphabet && !add)
+    else if(charValue < startOfAlphabet )
       charValue = charValue + 26
     
     return charValue;
@@ -50,7 +50,7 @@ const caesarModule = (function () {
 
     message = message.join("");
 
-    console.log(`input was: ${input} decoding/encoding gave: ${message}`)
+    console.log(`****input was: ${input} encoding:${encode} with shift value: ${ shift} gave: ${message}****`)
 
     return message;
   }
