@@ -5,11 +5,25 @@
 
 const substitutionModule = (function () {
   // you can add any code you want within this function scope
+  function checkUniqueness(alphabet){
+    
+    let checkArr = [];
+
+    for(let i = 0; i < alphabet.length; i++){
+      
+      if (checkArr.includes(alphabet[i]))  return false;
+      
+
+      checkArr.push(alphabet[i]);
+    }
+
+    return true;
+  }
 
   function substitution(input, alphabet, encode = true) {
     // your solution code here
 
-    if(alphabet.length != 26) return false;
+    if(!alphabet || alphabet.length != 26 || !checkUniqueness(alphabet)) return false;
 
     subArr = alphabet.split("")
 
