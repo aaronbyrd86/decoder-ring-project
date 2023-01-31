@@ -63,7 +63,7 @@ const polybiusModule = (function () {
 
     if (encode) {
       for (let i = 0; i < input.length; i++) {
-        const letter = input[i];
+        const letter = input[i].toLowerCase();
 
         if (letter === " ") message += " ";
         else if (letter === "i" || letter === "j")
