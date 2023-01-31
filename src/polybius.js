@@ -8,6 +8,18 @@ const polybiusModule = (function () {
 
   function polybius(input, encode = true) {
     // your solution code here
+    
+    if(!encode) {
+      
+      if(!input.includes(" "))
+        if(input.length % 2 != 0) return false;
+      
+      let testInput = input.split(" ")
+      testInput = testInput.join("") 
+      
+      if(testInput.length % 2 != 0) return false;
+    }
+
     const startOfAlphabet = 97;
     let lookupTable = {};
     let codes = [];
@@ -37,9 +49,10 @@ const polybiusModule = (function () {
       }
     }
 
-    for (let i = 0; i < input.length; i++){
+    if(encode){
+      for (let i = 0; i < input.length; i++){
       
-      if (encode){
+      
         const letter = input[i];
         
         if(letter === " ")
@@ -48,8 +61,33 @@ const polybiusModule = (function () {
           message += lookupTable["i/j"];
         else
           message += lookupTable[letter];
+      
       }
     }
+    else {
+      console.log(`input string is ${input}`);
+      
+      const inputArr = input.split("");
+      let index = 0;
+
+      for(const number of inputArr){
+        if(input[index] === " "){
+          message += " ";
+          index++;
+        }
+          
+        else {
+          const code = input[index] + input[index + 1];
+          message += Object.keys(lookupTable).find(letter => lookupTable[letter] === code)
+          index += 2;
+        }
+
+        if(index >= input.length) break;
+      }
+      
+    }
+    
+    
     
 
     return message;
