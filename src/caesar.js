@@ -50,8 +50,6 @@ const caesarModule = (function () {
 
     message = message.join("");
 
-    console.log(`****input was: ${input} encoding:${encode} with shift value: ${ shift} gave: ${message}****`)
-
     return message;
   }
 
