@@ -6,25 +6,25 @@
 const polybiusModule = (function () {
   // you can add any code you want within this function scope
 
-  function polybius(input, encode = true) {
-    // your solution code here
-    
-    if(!encode) {
-      
-      if(!input.includes(" "))
-        if(input.length % 2 != 0) return false;
-      
-      let testInput = input.split(" ")
-      testInput = testInput.join("") 
-      
-      if(testInput.length % 2 != 0) return false;
+  function isCodeOdd(code){
+    if (!code.includes(" ")) {
+      if (code.length % 2 != 0) return true;
     }
 
-    const startOfAlphabet = 97;
-    let lookupTable = {};
-    let codes = [];
-    let message = [];
+    let codeNoSpaces = code.split(" ");
+    codeNoSpaces = codeNoSpaces.join("");
 
+    if (codeNoSpaces.length % 2 != 0) return true;
+    else
+      return false;
+  }
+
+  function createLookup() {
+    const startOfAlphabet = 97;
+    let codes = [];
+    let lookupTable = {};
+    
+    //create a code for every letter of the alphabet
     for (let i = 0; i < 5; i++) {
       const codeValue1 = i + 1;
 
@@ -35,63 +35,62 @@ const polybiusModule = (function () {
       }
     }
 
+    //create a key that is a letter of the alphabet and give it a value from the codes array
     for (let i = 0; i < 25; i++) {
       if (i < 8)
         lookupTable[String.fromCharCode(startOfAlphabet + i)] = codes[i];
 
       if (i === 8) lookupTable["i/j"] = codes[i];
 
-      if (i > 8) {
-        if (i === 9)
-          lookupTable[String.fromCharCode(startOfAlphabet + i + 1)] = codes[i];
-        else
-          lookupTable[String.fromCharCode(startOfAlphabet + i + 1)] = codes[i];
-      }
+      if (i > 8)
+        lookupTable[String.fromCharCode(startOfAlphabet + i + 1)] = codes[i];
     }
 
-    if(encode){
-      for (let i = 0; i < input.length; i++){
-      
-      
-        const letter = input[i];
-        
-        if(letter === " ")
-          message += " ";
-        else if(letter === "i" || letter === "j")
-          message += lookupTable["i/j"];
-        else
-          message += lookupTable[letter];
-      
-      }
+    return lookupTable;
+  }
+
+  function polybius(input, encode = true) {
+    // your solution code here
+
+    if (!encode) {
+      if (isCodeOdd(input)) return false;
     }
-    else {
-      console.log(`input string is ${input}`);
-      
-      const inputArr = input.split("");
+
+  
+    let lookupTable = createLookup();
+    let message = [];
+     
+
+    if (encode) {
+      for (let i = 0; i < input.length; i++) {
+        const letter = input[i];
+
+        if (letter === " ") message += " ";
+        else if (letter === "i" || letter === "j")
+          message += lookupTable["i/j"];
+        else message += lookupTable[letter];
+      }
+    } else {
+  
       let index = 0;
 
-      for(const number of inputArr){
-        if(input[index] === " "){
+      for (const number of input) {
+        if (input[index] === " ") {
           message += " ";
           index++;
-        }
-          
-        else {
+        } else {
           const code = input[index] + input[index + 1];
-          message += Object.keys(lookupTable).find(letter => lookupTable[letter] === code)
+          message += Object.keys(lookupTable).find(
+            (letter) => lookupTable[letter] === code
+          );
           index += 2;
         }
 
-        if(index >= input.length) break;
+        if (index >= input.length) break;
       }
-      
     }
-    
-    
-    
 
     return message;
-
   }
 
   return {
